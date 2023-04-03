@@ -27,8 +27,32 @@ const loadUserProfile = async () => {
     displayNameElement.textContent = displayName;
 }
 
+const onPlaylistClicked = (event) => {
+    console.log(event.target.name)
+}
+
+const loadFeaturedPlaylist = async () => {
+    const { playlists: { items } } = await fetchRequest(ENDPOINT.featuredPlayist);
+    const playlistItemsSection = document.querySelector("#featured-playlist-item");
+
+    let playlistItems = ``;
+    for (let { name, description, images, id } of items) {
+        const [{ url: imageURL }] = images;
+        const playlistItem = document.createElement("section");
+        playlistItem.id = id;
+        playlistItem.setAttribute("data-type", "playlist");
+        playlistItem.className = "rounded border-2 border-solid p-4 hover:cursor-pointer";
+        playlistItem.addEventListener("click", onPlaylistClicked)
+        playlistItem.innerHTML = `<img src=${imageURL} alt=${name} class="rounded mb-2 object-contain shadow">
+                    <h2 class="text-sm">${name}</h2>
+                    <h3 class="text-xs">${description}</h3>`
+        playlistItemsSection.appendChild(playlistItem);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     loadUserProfile();
+    loadFeaturedPlaylist();
     document.addEventListener("click", () => {
         const profileMenu = document.querySelector("#profile-menu");
         if (!profileMenu.classList.contains("hidden")) {
