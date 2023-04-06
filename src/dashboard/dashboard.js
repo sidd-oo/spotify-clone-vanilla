@@ -28,35 +28,71 @@ const loadUserProfile = async () => {
 }
 
 const onPlaylistClicked = (event) => {
-    console.log(event.target.name)
+    console.log(event.target)
 }
 
-const loadFeaturedPlaylist = async () => {
-    const { playlists: { items } } = await fetchRequest(ENDPOINT.featuredPlayist);
-    const playlistItemsSection = document.querySelector("#featured-playlist-item");
+const loadPlaylist = async (endpoint, elementID) => {
+    const { playlists: { items } } = await fetchRequest(endpoint);
+    const playlistItemsSection = document.querySelector(`#${elementID}`);
 
-    let playlistItems = ``;
+    console.log(playlistItemsSection, "playlistItemsSection ")
+
     for (let { name, description, images, id } of items) {
         const [{ url: imageURL }] = images;
         const playlistItem = document.createElement("section");
         playlistItem.id = id;
         playlistItem.setAttribute("data-type", "playlist");
-        playlistItem.className = "rounded border-2 border-solid p-4 hover:cursor-pointer";
+        playlistItem.className = "rounded p-4 hover:cursor-pointer hover:bg-light-black";
         playlistItem.addEventListener("click", onPlaylistClicked)
         playlistItem.innerHTML = `<img src=${imageURL} alt=${name} class="rounded mb-2 object-contain shadow">
-                    <h2 class="text-sm">${name}</h2>
-                    <h3 class="text-xs">${description}</h3>`
+                    <h2 class="text-base font-semibold mb-4 truncate">${name}</h2>
+                    <h3 class="text-sm text-secondary line-clamp-2">${description}</h3>`
         playlistItemsSection.appendChild(playlistItem);
     }
 }
 
+const fillContentForDashboard = () => {
+    const pageContent = document.querySelector("#page-content");
+    const playlistMap = new Map([["featured", "featured-playlist-items"], ["top playlists", "top-playlist-items"]]);
+    let innerHTML = "";
+    for (let [type, id] of playlistMap) {
+        innerHTML += `
+        <article class="p-4">
+          <h1 class="mb-4 text-2xl font-bold capitalize">${type}</h1>
+          <section id="${id}" class="featured-songs grid grid-cols-auto-fill-cards gap-4">
+           
+          </section>
+        </article>
+        `
+    }
+    pageContent.innerHTML = innerHTML;
+}
+
+const loadPlaylists = () => {
+    loadPlaylist(ENDPOINT.featuredPlayist, "featured-playlist-items");
+    loadPlaylist(ENDPOINT.toplists, "top-playlist-items");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     loadUserProfile();
-    loadFeaturedPlaylist();
+    fillContentForDashboard();
+    loadPlaylists();
     document.addEventListener("click", () => {
         const profileMenu = document.querySelector("#profile-menu");
         if (!profileMenu.classList.contains("hidden")) {
             profileMenu.classList.add("hidden");
+        }
+    })
+
+    document.querySelector(".content").addEventListener("scroll", (event)=>{
+        const {scrollTop} = event.target;
+        const headerElem = document.querySelector(".header");
+        if(scrollTop >= headerElem.offsetHeight){
+            headerElem.classList.add("sticky", "top-0", "bg-black-secondary");
+            headerElem.classList.remove("bg-transparent");
+        }else{
+            headerElem.classList.remove("sticky", "top-0", "bg-black-secondary");
+            headerElem.classList.add("bg-transparent");
         }
     })
 })

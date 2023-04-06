@@ -12,9 +12,9 @@
     <main
       class="main grid-template-areas grid h-full grid-cols-[250px_1fr] grid-rows-[1fr_auto]"
     >
-      <aside class="sidebar">sidebar</aside>
-      <section class="content">
-        <header class="border-2 border-solid">
+      <aside class="sidenav">sidenav</aside>
+      <article class=" relative content overflow-auto bg-transparent">
+        <header class="header px-8 py-1">
           <nav class="flex justify-end px-8 py-4 relative">
             <button
               id="user-profile-btn"
@@ -47,14 +47,12 @@
             </button>
           </nav>
         </header>
-        <section>
-          <article class="p-4">
-            <h1 class="text-2xl">Featured Playlist</h1>
-            <section id="featured-playlist-item" class="grid grid-cols-auto-fill-cards gap-4 featured-song">
-            </section>
-          </article>
+        <article id="cover-content" class="grid content-center w-full h-72 -z-[1] absolute top-0 px-4 bg-gradient-to-b from-light-black to-black-base">
+          <h1 class="text-6xl">Hi Siddharth! Enjoy listening with us!</h1>
+        </article>
+        <section id="page-content" class=" bg-black-base mt-44">
         </section>
-      </section>
+      </article>
       <footer class="now-playing">now playing</footer>
     </main>
   </body>

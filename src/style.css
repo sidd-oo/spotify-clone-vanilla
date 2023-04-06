@@ -2,23 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.grid-template-areas{
-    grid-template-areas:
-    "sidebar content"
-    "now-playing now-playing"
+.grid-template-areas {
+  grid-template-areas:
+    "sidenav content"
+    "now-playing now-playing";
 }
 
-.grid-template-areas .sidebar{
-    grid-area: sidebar;
+.grid-template-areas .sidenav {
+  grid-area: sidenav;
 }
 
-
-.grid-template-areas .content{
-    grid-area: content;
+.grid-template-areas .content {
+  grid-area: content;
 }
 
-
-.grid-template-areas .now-playing{
-    grid-area: now-playing;
+.grid-template-areas .now-playing {
+  grid-area: now-playing;
 }
